@@ -1,0 +1,3 @@
+entity,tradetype,exchangerate,currency,instructiondate,settlementdate,units,priceperunit
+entity1,B,0.50,SGP,01/01/2016,01/02/2016,200,100.25
+entity2,S,0.22,AED,01/05/2016,01/07/2016,450,150.5
