@@ -22,6 +22,8 @@ public class ReportEngineApplication {
 			reportEngineService = new ReportEngineService();
 
 			reportEngineService.getIncomingInstructions();
+			
+			reportEngineService.getOutgoingInstructions();
 		} catch (ApplicationException e) {
 		}
 	}

@@ -24,7 +24,7 @@ public class InstructionCSVParser implements IDataParser {
 
 	private final List<Instruction> instructions = new ArrayList<>();
 
-	private static final String DATE_FORMATTER_PATTERN = "MM/dd/yyyy";
+	private static final String DATE_FORMATTER_PATTERN = "MM-dd-yyyy";
 
 	@Override
 	public List<Instruction> parseInstructions() throws ApplicationException {
@@ -42,8 +42,10 @@ public class InstructionCSVParser implements IDataParser {
 				this.scanner.useDelimiter(",");
 				while (this.scanner.hasNext()) {
 					final String data = this.scanner.next();
-					this.mapDataToInstruction(this.lineNumber, data, instruction);
-					this.index++;
+					if (null != data && (!"".equals(data))) {
+						this.mapDataToInstruction(this.lineNumber, data, instruction);
+						this.index++;
+					}
 				}
 				this.index = 0;
 				this.instructions.add(instruction);
