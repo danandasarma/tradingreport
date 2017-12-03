@@ -23,7 +23,7 @@ public class ReportEngineApplication {
 
 			reportEngineService.getIncomingInstructions();
 			
-			reportEngineService.getOutgoingInstructions();
+			//reportEngineService.getOutgoingInstructions();
 		} catch (ApplicationException e) {
 		}
 	}

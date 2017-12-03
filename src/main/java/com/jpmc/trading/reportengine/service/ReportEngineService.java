@@ -2,7 +2,6 @@ package com.jpmc.trading.reportengine.service;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -38,19 +37,23 @@ public class ReportEngineService {
 	 *             the application exception
 	 */
 	public void getIncomingInstructions() throws ApplicationException {
+
+		System.out.println("Parsing incoming instructions...");
 		instructionParser = new InstructionCSVParser();
 
 		instructions = instructionParser.parseInstructions();
 
-		Map<LocalDate, Instruction> incomingInstructionsMap = instructions.stream()
-				.filter(instruction -> TRADE_TYPE_BUY.equals(instruction.getTradeType()))
-				.collect(Collectors.toMap(Instruction::getSettlementDate, Function.identity()));
-		
+		List<Instruction> incomingInstructions = instructions.stream()
+				.filter(instruction -> TRADE_TYPE_BUY.equals(instruction.getTradeType())).collect(Collectors.toList());
+
+		incomingInstructions.sort((instruction1, instruction2) -> instruction1.getSettlementDate()
+				.compareTo(instruction2.getSettlementDate()));
+
 		System.out.println("Incoming instructions:");
 
-		incomingInstructionsMap.entrySet().stream().forEach(e -> System.out.println(e.getKey() + ":" + e.getValue()));
+		incomingInstructions.forEach(instruction -> System.out.println(instruction));
 	}
- 
+
 	/**
 	 * Gets the outgoing instructions.
 	 *
@@ -68,7 +71,7 @@ public class ReportEngineService {
 				.collect(Collectors.toMap(Instruction::getSettlementDate, Function.identity()));
 
 		System.out.println("Outgoing instructions:");
-		
+
 		outgoingInstructionsMap.entrySet().stream().forEach(e -> System.out.println(e.getKey() + ":" + e.getValue()));
 	}
 }
