@@ -1,7 +1,8 @@
 # Engine for trading reports
 
 ## 1. Problem Statement
-	* Requirement is to build a report engine that takes data, which represents the instructions sent by various clients to JP Morgan to execute in the international market. 
+	* Build a report engine that takes instructions sent by various clients to JP Morgan to execute in the international market. 
+	* The data contains details such as trade type, agreed fx, currency, instruction & settlement dates, units and price per unit for each of the entities.
 	* Based on the data, generate report that shows
 		** Amount in USD settled incoming everyday
 		** Amount in USD settled outgoing everyday
