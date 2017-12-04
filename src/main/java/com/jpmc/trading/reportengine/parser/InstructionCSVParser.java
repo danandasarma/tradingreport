@@ -9,10 +9,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.jpmc.trading.reportengine.dto.Instruction;
 import com.jpmc.trading.reportengine.exception.ApplicationException;
 
 public class InstructionCSVParser implements IDataParser {
+	/** The Constant logger. */
+	private static final Logger logger = LoggerFactory.getLogger(InstructionCSVParser.class);
 
 	private Scanner scanner;
 
@@ -31,7 +36,7 @@ public class InstructionCSVParser implements IDataParser {
 		this.getClass().getClassLoader();
 		// open file input stream
 		final BufferedReader reader = new BufferedReader(
-				new InputStreamReader(this.getClass().getClassLoader().getResourceAsStream("trade_instructions.csv")));
+				new InputStreamReader(this.getClass().getClassLoader().getResourceAsStream("data/trade_instructions.csv")));
 
 		try {
 			reader.readLine();// Skip the first line as it has headers
@@ -91,7 +96,7 @@ public class InstructionCSVParser implements IDataParser {
 			instruction.setPricePerUnit(Double.parseDouble(data));
 			break;
 		default:
-			System.out.println("invalid data::" + data);
+			logger.error("invalid data::" + data);
 			throw new ApplicationException("Invalid data found at line:" + lineNumber);
 		}
 	}

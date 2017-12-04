@@ -1,17 +1,19 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns="http://maven.apache.org/POM/4.0.0"
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.jpmc.trading</groupId>
 	<artifactId>report-engine</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
+	<packaging>jar</packaging>
 
 	<name>report-engine</name>
+	<url>http://maven.apache.org</url>
 	<description>POM for report engine</description>
 
 	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
 		<!-- Base directory -->
 		<main.basedir>${basedir}</main.basedir>
 
@@ -31,7 +33,6 @@
 		<commons.cli.version>1.4</commons.cli.version>
 
 		<!-- slf4j -->
-
 		<slf4j.api.version>1.7.25</slf4j.api.version>
 		<slf4j.simple.version>1.7.21</slf4j.simple.version>
 
@@ -42,39 +43,35 @@
 		<lombok.version>1.16.18</lombok.version>
 	</properties>
 
-	<dependencyManagement>
+	<dependencies>
+		<!-- Apache Commons CLI -->
+		<dependency>
+			<groupId>commons-cli</groupId>
+			<artifactId>commons-cli</artifactId>
+			<version>${commons.cli.version}</version>
+		</dependency>
 
-		<dependencies>
-			<!-- Apache Commons CLI -->
-			<dependency>
-				<groupId>commons-cli</groupId>
-				<artifactId>commons-cli</artifactId>
-				<version>${commons.cli.version}</version>
-			</dependency>
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>${lombok.version}</version>
+		</dependency>
 
-			<!-- Lombok dependency -->
-			<dependency>
-				<groupId>org.projectlombok</groupId>
-				<artifactId>lombok</artifactId>
-				<version>${lombok.version}</version>
-			</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-simple</artifactId>
+			<version>${slf4j.simple.version}</version>
+		</dependency>
 
-			<!-- https://mvnrepository.com/artifact/log4j/log4j -->
-			<dependency>
-				<groupId>log4j</groupId>
-				<artifactId>log4j</artifactId>
-				<version>1.2.17</version>
-			</dependency>
+		<!-- Junit dependency -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>${junit.version}</version>
+			<scope>test</scope>
+		</dependency>
 
-			<!-- Junit dependency -->
-			<dependency>
-				<groupId>junit</groupId>
-				<artifactId>junit</artifactId>
-				<version>${junit.version}></version>
-				<scope>test</scope>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
+	</dependencies>
 
 	<build>
 		<sourceDirectory>src/main/java</sourceDirectory>
@@ -104,20 +101,57 @@
 				</configuration>
 			</plugin>
 			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>exec-maven-plugin</artifactId>
-				<version>1.2.1</version>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-shade-plugin</artifactId>
+				<configuration>
+					<createDependencyReducedPom>false</createDependencyReducedPom>
+				</configuration>
 				<executions>
 					<execution>
+					  <goals>
+						<goal>shade</goal>
+					  </goals>
+					  <configuration>
+						<shadedArtifactAttached>true</shadedArtifactAttached>
+						<finalName>${project.artifactId}</finalName>
+						<transformers>
+						  <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+							<mainClass>com.jpmc.trading.reportengine.ReportEngineApplication</mainClass>
+						  </transformer>
+						</transformers>
+					  </configuration>
+					</execution>
+				  </executions>
+			</plugin>
+			<plugin>
+				<!--Note: Normally, this plugin would be run using "mvn compile assembly:single" 
+					but the execution clause below binds it to the normal 'package' lifecycle 
+					phase -->
+				<artifactId>maven-assembly-plugin</artifactId>
+				<configuration>
+					<archive>
+					  <manifest>
+						<addClasspath>true</addClasspath>
+						<classpathPrefix>${project.build.finalName}.lib/</classpathPrefix>
+						<mainClass>com.jpmc.trading.reportengine.ReportEngineApplication</mainClass>
+					  </manifest>
+					</archive>				
+					<descriptors>
+						<descriptor>src/assembly/deployment_package_assembly.xml</descriptor>
+					</descriptors>
+					<finalName>${project.artifactId}-${project.version}</finalName>
+					<appendAssemblyId>false</appendAssemblyId>
+				</configuration>
+				<executions>
+					<execution>
+						<id>deployment_package_execution</id>
+						<phase>package</phase>
 						<goals>
-							<goal>java</goal>
+							<goal>single</goal>
 						</goals>
 					</execution>
 				</executions>
-				<configuration>
-					<mainClass>com.jpmc.trading.reportengine.ReportEngineApplication</mainClass>
-				</configuration>
-			</plugin>
+			</plugin>			
 		</plugins>
 	</build>
 </project>

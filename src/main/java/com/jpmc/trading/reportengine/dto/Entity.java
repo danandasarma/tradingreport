@@ -1,5 +1,8 @@
 package com.jpmc.trading.reportengine.dto;
 
+import lombok.Data;
+
+@Data
 public class Entity {
 	private String name;
 	private Double tradeAmount = 0d;
