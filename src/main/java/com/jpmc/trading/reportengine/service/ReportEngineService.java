@@ -55,9 +55,9 @@ public class ReportEngineService {
 	public void printEntitiesRanking(TradeType tradeType) throws ApplicationException {
 
 		if (tradeType.name().equals(TradeType.BUY.name())) {
-			message = "Outgoing entities based on ranking \n **********************************";
+			message = "Outgoing entities based on ranking ...";
 		} else {
-			message = "Incoming entities based on ranking \n **********************************";
+			message = "Incoming entities based on ranking ...";
 		}
 
 		filteredInstructions = getFilteredInstructions(tradeType);
@@ -66,6 +66,7 @@ public class ReportEngineService {
 
 		logger.info(message);
 		logger.info("Entity Name \tTrade Amount");
+		logger.info("*********** \t************");
 		entities.stream().forEach(
 				entity -> logger.info(entity.getName() + "\t" + currencyFormatter.format(entity.getTradeAmount())));
 	}

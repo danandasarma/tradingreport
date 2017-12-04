@@ -60,7 +60,7 @@ public class ReportEngineApplication {
 			} else if (cmd.hasOption("IRR")) {
 				// Generate incoming rankings report
 				reportEngineService.printEntitiesRanking(TradeType.SELL);
-			} else if (cmd.hasOption("IRR")) {
+			} else if (cmd.hasOption("ORR")) {
 				// Generate outgoing rankings report
 				reportEngineService.printEntitiesRanking(TradeType.BUY);
 			} else {

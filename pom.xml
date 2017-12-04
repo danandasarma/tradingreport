@@ -26,6 +26,9 @@
 		<!-- maven compiler plugin -->
 		<maven.compiler.plugin.version>3.6.1</maven.compiler.plugin.version>
 
+		<!-- maven shade plugin -->
+		<maven.shade.plugin.version>3.1.0</maven.shade.plugin.version>		
+
 		<!-- maven jar plugin -->
 		<maven.jar.plugin.version>3.0.2</maven.jar.plugin.version>
 
@@ -103,6 +106,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-shade-plugin</artifactId>
+				<version>${maven.shade.plugin.version}</version>
 				<configuration>
 					<createDependencyReducedPom>false</createDependencyReducedPom>
 				</configuration>
