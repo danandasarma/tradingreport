@@ -172,7 +172,7 @@ public class Instruction {
 
 	@Override
 	public String toString() {
-		return "TradeInstruction [entity=" + this.entity + ", tradeType=" + this.tradeType + ", exchangeRate="
+		return "Trade Instruction [entity=" + this.entity + ", tradeType=" + this.tradeType + ", exchangeRate="
 				+ this.exchangeRate + ", currency=" + this.currency + ", instructionDate=" + this.instructionDate
 				+ ", settlementDate=" + this.settlementDate + ", units=" + this.units + ", pricePerUnit="
 				+ this.pricePerUnit + "]";
